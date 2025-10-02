@@ -1,0 +1,14 @@
+h1 {
+  color: red;
+  background: #cacaca;
+}
+
+.alert-success {
+  background-color: green;
+  color:white;
+}
+
+.alert-danger {
+  background-color: red;
+  color: white;
+}

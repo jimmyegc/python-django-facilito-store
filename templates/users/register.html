@@ -1,19 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block content %}
+<h2>Register</h2>
+<form method="post">
+  {% csrf_token %}
+  <!-- <div>
+      {{ form.username.label_tag }}
+      {{ form.username }}
+    </div>
+    <div>
+      {{ form.email.label_tag }}
+      {{ form.email }}
+    </div>
+    <div>
+      {{ form.password.label_tag }}
+      {{ form.password }}
+    </div> -->
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
-</head>
-
-<body>
-  <h2>Register</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Register</button>
-  </form>
-</body>
-
-</html>
+  {% for field in form %}
+  <div>
+    {{ field.label_tag }}
+    {{ field }}
+  </div>
+  {% if field.errors %}
+  {{ field.errors }}
+  {% endif %}
+  {% endfor %}
+  <button type="submit">Register</button>
+</form>
+{% endblock %}

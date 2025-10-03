@@ -1,0 +1,101 @@
+{% url 'login' as login %}
+{% url 'register' as register %}
+<nav class="bg-gray-900 text-white px-6 py-3">
+  <div class="flex items-center justify-between">
+    <!-- Logo / Nombre -->
+    <a href="#" class="text-xl font-bold flex items-center gap-2">
+      <!-- Icono Home -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 9.75L12 3l9 6.75V21a.75.75 0 01-.75.75h-4.5a.75.75 0 01-.75-.75V15h-6v6a.75.75 0 01-.75.75h-4.5A.75.75 0 013 21V9.75z" />
+      </svg>
+      Facilito Store
+    </a>
+
+    <!-- Botón Hamburguesa (móvil) -->
+    <button id="menu-btn" class="md:hidden focus:outline-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <!-- Menú (desktop) -->
+    <ul class="hidden md:flex gap-6 font-medium">
+      {% if user.is_authenticated %}
+      <li>
+        <a href="{% url 'logout' %}" class="flex items-center gap-2 hover:text-orange-400">
+          <span class="fas fa-sign-in-alt"></span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+          </svg>
+          Logout
+        </a>
+      </li>
+      {% else %}
+      <li>
+        <a href="{{ login }}"
+          class="flex items-center gap-2 hover:text-orange-400 {% if request.path == login %}text-orange-400{% endif %}">
+          <span class="fas fa-user"></span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Login
+        </a>
+      </li>
+      <li>
+        <a href="{{ register }}"
+          class="flex items-center gap-2 hover:text-orange-400 {% if request.path == register %}text-orange-400{% endif %}">
+          <span class="fas fa-user-plus"></span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Registro
+        </a>
+      </li>
+      {% endif %}
+
+
+    </ul>
+  </div>
+
+  <!-- Menú (móvil) -->
+  <ul id="mobile-menu" class="hidden flex-col gap-4 mt-4 md:hidden font-medium">
+    <li>
+      <a href="#" class="flex items-center gap-2 hover:text-orange-400">
+
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Login
+      </a>
+    </li>
+    <li>
+      <a href="#" class="flex items-center gap-2 hover:text-orange-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Registro
+      </a>
+    </li>
+    <li>
+      <a href="#" class="flex items-center gap-2 hover:text-orange-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+        </svg>
+        Logout
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<script>
+  const btn = document.getElementById("menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  btn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+  });
+</script>

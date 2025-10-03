@@ -1,39 +1,22 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>+
-  <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <style></style>
-</head>
+{% block content %}
 
-<body>
-  {% if messages %}
-  {% for message in messages %}
-  <div class="{% if message.tags == 'success'%} alert-success {%else%} alert-danger {%endif%}">{{ message }}</div>
-  {% endfor %}
+<h1>Hola mundo, desde HTML</h1>
+{{ message }}
+
+<img src="{% static 'images/shopping.jpg' %}" alt="" width="240px">
+
+{% for product in products %}
+<p>{{ product.title }}</p>
+<span>
+  {% if product.stock %}
+  Disponible
+  {% else %}
+  No disponible
   {% endif %}
-  <h1>Hola mundo, desde HTML</h1>
-  {{ message }}
+</span>
+{% endfor %}
 
-  <img src="{% static 'images/shopping.jpg' %}" alt="" width="240px">
-
-  {% for product in products %}
-  <p>{{ product.title }}</p>
-  <span>
-    {% if product.stock %}
-    Disponible
-    {% else %}
-    No disponible
-    {% endif %}
-  </span>
-  {% endfor %}
-
-  <script src="{% static 'js/main.js' %}"></script>
-</body>
-
-</html>
+{% endblock %}

@@ -45,3 +45,21 @@ Shell de Django
 ```
 python manage.py shell
 ```
+
+Manejo de imagenes
+
+```
+pip install Pillow
+```
+
+Respaldar información
+
+```
+python manage.py dumpdata products.product --format=json --indent=4 > products/fixtures/products.json
+```
+
+Importar data de respaldo
+
+```
+python manage.py loaddata products.json
+```

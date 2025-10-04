@@ -1,0 +1,33 @@
+<div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+  <!-- Imagen del producto -->
+  <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-full h-48 object-cover" />
+
+  <!-- Contenido -->
+  <div class="p-4 flex flex-col flex-1">
+    <!-- Título -->
+    <h3 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+      {{ product.title }}
+    </h3>
+
+    <!-- Precio -->
+    <p class="text-xl font-bold text-indigo-600 mb-2">
+      ${{ product.price }}
+    </p>
+
+    <!-- Stock -->
+    <span class="text-sm {{ product.stock|yesno:'text-green-600,text-red-600' }} mb-3">
+      {% if product.stock %}
+      Disponible
+      {% else %}
+      No disponible
+      {% endif %}
+    </span>
+
+    <!-- Botón -->
+    <a href="{% url 'products:product' product.slug %}"
+      class="mt-auto w-full bg-indigo-600 text-white py-2 px-4 rounded-xl text-center hover:bg-indigo-700 transition disabled:opacity-50"
+      {% if not product.stock %} aria-disabled="true" {% endif %}>
+      Ver más
+    </a>
+  </div>
+</div>

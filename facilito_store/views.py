@@ -3,17 +3,17 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from users.models import User
+
+from products.models import Product
 from .forms import RegisterForm
 
 def index(request):
+    products = Product.objects.all().order_by('-id')
     return render(request, 'index.html', {
         'message': 'Nuevo mensaje desde HTML',
-        'products': [
-            { 'title': 'Computadora', 'price': 500, 'stock': True },
-            { 'title': 'Teclado', 'price': 500, 'stock': False },
-            { 'title': 'Monitor', 'price': 500, 'stock': True },
-        ]
+        'products': products
     })
     
 def login_view (request):

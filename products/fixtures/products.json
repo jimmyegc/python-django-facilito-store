@@ -1,0 +1,38 @@
+[
+{
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+        "title": "laptop",
+        "description": "laptop gamer",
+        "price": "25000.00",
+        "slug": "laptop",
+        "image": "products/imagen-27.png",
+        "created_at": "2025-10-04T00:00:17.052Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+        "title": "teclado gamer",
+        "description": "teclado gamer",
+        "price": "2445.00",
+        "slug": "teclado-gamer",
+        "image": "products/HyperX-Alloy-FPS-RGB-01.jpg",
+        "created_at": "2025-10-04T00:21:20.483Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 3,
+    "fields": {
+        "title": "monitor gamer",
+        "description": "monitor samsung",
+        "price": "8000.00",
+        "slug": "monitor-gamer",
+        "image": "products/Odyssey-G9_4.jpg",
+        "created_at": "2025-10-04T00:22:30.877Z"
+    }
+}
+]

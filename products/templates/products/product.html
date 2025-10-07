@@ -1,16 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
-  <h1>{{ product.title }}</h1>
-  {% if product.image %}
-  <img src="{{ product.image.url }}" alt="Imagen del producto" width="200" height="200">
-  {% endif %}
+<div class="max-w-5xl mx-auto px-4 py-10">
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
 
-  <div>Precio: <span>${{ product.price }}</span></div>
-  <div>Descripción:
-    <p>{{ product.description }}</p>
+    <!-- Imagen del producto -->
+    <div class="md:w-1/2 flex items-center justify-center bg-gray-100 p-6">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.title }}"
+        class="w-full max-w-sm rounded-xl object-cover shadow-md">
+      {% else %}
+      <div class="w-full h-64 flex items-center justify-center bg-gray-200 text-gray-400 italic rounded-xl">
+        Sin imagen disponible
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Información del producto -->
+    <div class="md:w-1/2 p-6 flex flex-col justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ product.title }}</h1>
+        <div class="text-2xl font-semibold text-orange-500 mb-4">
+          ${{ product.price }}
+        </div>
+
+        <div class="text-gray-600 leading-relaxed mb-6">
+          <h2 class="font-semibold text-gray-700 mb-2">Descripción:</h2>
+          <p>{{ product.description }}</p>
+        </div>
+      </div>
+
+      <!-- Snippet del carrito -->
+      <div class="border-t border-gray-200 pt-6 mt-4">
+        {% include 'carts/snippets/add.html' %}
+      </div>
+    </div>
   </div>
 </div>
-
 {% endblock %}

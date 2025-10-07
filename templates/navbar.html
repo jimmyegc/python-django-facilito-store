@@ -1,5 +1,7 @@
 {% url 'login' as login %}
 {% url 'register' as register %}
+{% url 'carts:cart' as cart %}
+
 <nav class="bg-gray-900 text-white px-6 py-3">
   <div class="flex items-center justify-between">
     <!-- Logo / Nombre -->
@@ -12,6 +14,16 @@
       </svg>
       Facilito Store
     </a>
+    <div>
+      <ul>
+        <li class="{% if request.path == cart %}text-orange-400{% endif %}">
+          <a href="{{ cart }}">
+            Mi carrito
+            <span class="fas fa-shopping-cart"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
 
     <!-- Botón Hamburguesa (móvil) -->
     <button id="menu-btn" class="md:hidden focus:outline-none">
@@ -23,6 +35,8 @@
 
     <!-- Menú (desktop) -->
     <ul class="hidden md:flex gap-6 font-medium">
+
+
       {% if user.is_authenticated %}
       <li>
         <a href="{% url 'logout' %}" class="flex items-center gap-2 hover:text-orange-400">

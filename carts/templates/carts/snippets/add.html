@@ -1,0 +1,47 @@
+<form action="{% url 'carts:add' %}" method="post" class="space-y-4">
+  {% csrf_token %}
+  <input type="hidden" name="product_id" value="{{ product.id }}">
+
+  <div class="flex items-center justify-center gap-3">
+    <!-- Botón disminuir -->
+    <button id="remove" type="button"
+      class="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full shadow transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400">
+      <span class="text-xl font-bold">−</span>
+    </button>
+
+    <!-- Input cantidad -->
+    <input id="quantity" type="number" name="quantity" value="1" min="1" readonly
+      class="w-16 text-center border border-gray-300 rounded-lg py-2 text-gray-700 focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none" />
+
+    <!-- Botón aumentar -->
+    <button id="add" type="button"
+      class="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full shadow transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-400">
+      <span class="text-xl font-bold">+</span>
+    </button>
+  </div>
+
+  <!-- Botón agregar al carrito -->
+  <button type="submit"
+    class="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-xl shadow-md transition duration-200 ease-in-out hover:scale-105">
+    🛒 Agregar al carrito
+  </button>
+</form>
+
+<script>
+  const add = document.getElementById('add')
+  const remove = document.getElementById('remove')
+  const quantity = document.getElementById('quantity')
+
+  add.addEventListener('click', (e) => {
+    quantity.value = parseInt(quantity.value) + 1
+  })
+
+  remove.addEventListener('click', (e) => {
+    value = parseInt(quantity.value)
+    if (value != 1) {
+      value = value - 1
+    }
+    quantity.value = value
+  })
+
+</script>

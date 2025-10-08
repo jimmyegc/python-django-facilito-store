@@ -1,0 +1,77 @@
+<nav class="flex items-center justify-center py-4 text-sm text-gray-600" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+
+    {% for item in breadcrumb %}
+    {% if item.active%}
+    <a href="{{ item.url }}" class="text-orange-500 font-semibold">
+      {{ item.title }}
+    </a>
+    {% else %}
+    <a href="{{ item.url }}" class="text-gray-600 hover:text-orange-500 font-medium">
+      {{ item.title }}
+    </a>
+    {% endif %}
+    {% endfor %}
+
+    <!-- Inicio -->
+    <li>
+      <div class="flex items-center">
+        <a href="{% url 'index' %}" class="text-gray-600 hover:text-orange-500 font-medium">
+          Inicio
+        </a>
+      </div>
+    </li>
+
+    <!-- Tienda -->
+    <li>
+      <div class="flex items-center">
+        <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+          aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+        <a href="{% url 'index' %}" class="text-gray-600 hover:text-orange-500 font-medium">
+          Tienda
+        </a>
+      </div>
+    </li>
+
+    <!-- Carrito -->
+    <li>
+      <div class="flex items-center">
+        <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+          aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+        <a href="{% url 'index' %}" class="text-orange-500 font-semibold">
+          Carrito
+        </a>
+      </div>
+    </li>
+
+    <!-- Pago -->
+    <li>
+      <div class="flex items-center">
+        <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+          aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-gray-400 font-medium">
+          Pago
+        </span>
+      </div>
+    </li>
+
+    <!-- Confirmación -->
+    <li>
+      <div class="flex items-center">
+        <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+          aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-gray-400 font-medium">
+          Confirmación
+        </span>
+      </div>
+    </li>
+  </ol>
+</nav>

@@ -1,0 +1,29 @@
+{% load product_extras %}
+
+<!-- Resumen de pedido -->
+<div class="bg-gray-50 rounded-2xl shadow-md p-6 h-fit">
+  <h3 class="text-lg font-semibold text-gray-800 mb-4">Resumen del pedido</h3>
+
+  <div class="flex justify-between text-gray-600 mb-2">
+    <span>Subtotal</span>
+    <span>{{ cart.total | price_format }}</span>
+  </div>
+  <div class="flex justify-between text-gray-600 mb-2">
+    <span>Envío</span>
+    <span>{{ order.shipping_total | price_format }}</span>
+  </div>
+  <hr class="my-3">
+  <div class="flex justify-between font-semibold text-gray-800 text-lg">
+    <span>Total</span>
+    <span>{{ order.total | price_format}}</span>
+  </div>
+
+  <!-- Botón de continuar -->
+  <form action="{% url 'index' %}" method="post" class="mt-6">
+    {% csrf_token %}
+    <button type="submit"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-xl transition">
+      Confirmar pedido
+    </button>
+  </form>
+</div>

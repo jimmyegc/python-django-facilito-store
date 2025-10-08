@@ -13,6 +13,8 @@
 <body class="bg-gray-100">
   {% include 'navbar.html' %}
   {% include 'messages.html' %}
+  {% block breadcrumb %}
+  {% endblock %}
   <div class="max-w-6xl border mx-auto mt-4 p-4">
     {% block content %}
     {% endblock %}

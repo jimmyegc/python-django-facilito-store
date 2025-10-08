@@ -1,0 +1,27 @@
+{% load product_extras %}
+
+<div class="flex items-center justify-between bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition">
+
+  <!-- Imagen -->
+  <div class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-xl border">
+    <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover">
+  </div>
+
+  <!-- Detalles -->
+  <div class="flex-1 px-4">
+    <h3 class="text-lg font-medium text-gray-800">
+      <a href="{% url 'products:product' product.slug %}">
+        {{ product.title }}
+      </a>
+    </h3>
+    <p class="text-sm text-gray-500">Cantidad: {{ product.quantity }}</p>
+    <p class="text-sm text-gray-500">Precio unitario: ${{ product.price | price_format }}</p>
+  </div>
+
+  <!-- Subtotal -->
+  <div class="text-right">
+    <p class="text-lg font-semibold text-gray-800">
+      ${{ product.get_total_price }}
+    </p>
+  </div>
+</div>

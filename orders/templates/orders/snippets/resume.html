@@ -19,7 +19,7 @@
   </div>
 
   <!-- Botón de continuar -->
-  <form action="{% url 'index' %}" method="post" class="mt-6">
+  <form action="{% url 'orders:address' %}" method="post" class="mt-6">
     {% csrf_token %}
     <button type="submit"
       class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-xl transition">

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+  <h2>Mis direcciones</h2>
+  <br>
+  <a href="{% url 'shipping_addresses:create' %}"
+    class="bg-violet-600 hover:bg-violet-700 text-white rounded-xl px-4 py-2">Agregar nueva dirección</a>
+
+  <div class="mt-4">
+    {% for address in object_list %}
+    {% include 'shipping_addresses/snippets/shipping_address.html' with edit=True %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

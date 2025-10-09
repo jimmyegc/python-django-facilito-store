@@ -1,6 +1,7 @@
 {% url 'login' as login %}
 {% url 'register' as register %}
 {% url 'carts:cart' as cart %}
+{% url 'shipping_addresses:shipping_addresses' as shipping_addresses %}
 
 <nav class="bg-gray-900 text-white px-6 py-3">
   <div class="flex items-center justify-between">
@@ -15,7 +16,15 @@
       Facilito Store
     </a>
     <div>
-      <ul>
+      <ul class="flex gap-2">
+        {% if user.is_authenticated %}
+        <li class="{% if request.path == shipping_addresses %}text-orange-400{% endif %}">
+          <a href="{{ shipping_addresses }}">
+            Mis direcciones
+            <span class="fas fa-location-arrow"></span>
+          </a>
+        </li>
+        {% endif %}
         <li class="{% if request.path == cart %}text-orange-400{% endif %}">
           <a href="{{ cart }}">
             Mi carrito

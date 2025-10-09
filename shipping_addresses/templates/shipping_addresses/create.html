@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+  <h2>Nueva dirección</h2>
+  {% include 'shipping_addresses/snippets/form.html' with message='Crear' %}
+</div>
+{% endblock %}

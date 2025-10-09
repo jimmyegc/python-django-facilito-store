@@ -1,0 +1,59 @@
+<div class="relative bg-white rounded-2xl shadow-md p-5 border border-gray-200 hover:shadow-lg transition mt-4">
+  {% if address.default %}
+  <span class="absolute top-2 right-2 bg-indigo-600 text-white text-xs font-medium px-2 py-1 rounded-md">
+    Predeterminada
+  </span>
+  {% endif %}
+
+  <div class="space-y-1">
+    <p class="text-gray-800 font-semibold">{{ address.line1 }}</p>
+    {% if address.line2 %}
+    <p class="text-gray-600">{{ address.line2 }}</p>
+    {% endif %}
+    <p class="text-gray-600">{{ address.city }}, {{ address.state }}</p>
+    <p class="text-gray-600">{{ address.country }}</p>
+    <p class="text-gray-600">C.P. {{ address.postal_code }}</p>
+    <p>{{ address.address }}</p>
+    {% if address.reference %}
+    <p class="text-sm text-gray-500 mt-2">
+      <span class="font-medium text-gray-700">Referencia:</span> {{ address.reference }}
+    </p>
+    {% endif %}
+  </div>
+
+  <div class="mt-4 flex items-center justify-between border-t border-gray-100 pt-3">
+    <p class="text-xs text-gray-500">
+      Agregada el {{ address.created_at|date:"d/m/Y" }}
+    </p>
+    {% if edit %}
+    <div class="flex gap-2">
+      {% if not address.default %}
+      <a href="{% url 'shipping_addresses:default' address.pk %}"
+        class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-gray-200 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Hacer predeterminada
+      </a>
+      {% else %}
+      <a href="{% url 'shipping_addresses:update' address.pk %}"
+        class="inline-flex items-center gap-1 bg-indigo-50 text-indigo-600 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-4-4m0 0l4-4m-4 4h14" />
+        </svg>
+        Editar
+      </a>
+
+      <a href="{% url 'shipping_addresses:delete' address.pk %}"
+        class="inline-flex items-center gap-1 bg-red-50 text-red-600 text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-red-100 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        Eliminar
+      </a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+</div>

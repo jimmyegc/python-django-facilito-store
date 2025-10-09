@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-12 bg-white shadow-md rounded-2xl p-6 text-center">
+  <h2 class="text-xl font-semibold text-gray-800 mb-4">Eliminar dirección</h2>
+
+  <p class="text-gray-600 mb-6">
+    ¿Estás seguro de que deseas eliminar esta dirección?
+  </p>
+
+  <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 text-left">
+    <p class="text-gray-800 font-medium">{{ object.line1 }}</p>
+    {% if object.line2 %}
+    <p class="text-gray-600">{{ object.line2 }}</p>
+    {% endif %}
+    <p class="text-gray-600">{{ object.city }}, {{ object.state }}</p>
+    <p class="text-gray-600">{{ object.country }}</p>
+    <p class="text-gray-600">C.P. {{ object.postal_code }}</p>
+    {% if object.reference %}
+    <p class="text-sm text-gray-500 mt-2">
+      <span class="font-medium text-gray-700">Referencia:</span> {{ object.reference }}
+    </p>
+    {% endif %}
+  </div>
+
+  <form method="post" class="flex justify-center gap-4">
+    {% csrf_token %}
+    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition">
+      Sí, eliminar
+    </button>
+    <a href="{% url 'shipping_addresses:shipping_addresses' %}"
+      class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition">
+      Cancelar
+    </a>
+  </form>
+</div>
+{% endblock %}

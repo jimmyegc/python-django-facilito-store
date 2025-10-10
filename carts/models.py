@@ -1,6 +1,7 @@
 import decimal
 import uuid
 from django.db import models
+from orders.common import OrderStatus
 from users.models import User
 from products.models import Product
 from django.db.models.signals import m2m_changed
@@ -42,7 +43,7 @@ class Cart(models.Model):
 
     @property
     def order(self):
-        return self.order_set.first()
+        return self.order_set.filter(status=OrderStatus.CREATED).first()
 
 class CartProductsManager(models.Manager):
     def create_or_update_quantity(self, cart, product, quantity=1):

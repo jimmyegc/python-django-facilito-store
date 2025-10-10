@@ -2,123 +2,114 @@
 {% url 'register' as register %}
 {% url 'carts:cart' as cart %}
 {% url 'shipping_addresses:shipping_addresses' as shipping_addresses %}
+{% url 'orders:completeds' as completeds %}
 
-<nav class="bg-gray-900 text-white px-6 py-3">
-  <div class="flex items-center justify-between">
-    <!-- Logo / Nombre -->
-    <a href="{% url 'index' %}" class="text-xl font-bold flex items-center gap-2">
-      <!-- Icono Home -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
+<nav class="bg-gray-900 text-white fixed w-full top-0 z-50 shadow-md">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
+
+    <!-- LOGO -->
+    <a href="{% url 'index' %}" class="flex items-center gap-2 font-bold text-xl text-yellow-400 hover:text-yellow-300">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
           d="M3 9.75L12 3l9 6.75V21a.75.75 0 01-.75.75h-4.5a.75.75 0 01-.75-.75V15h-6v6a.75.75 0 01-.75.75h-4.5A.75.75 0 013 21V9.75z" />
       </svg>
       Facilito Store
     </a>
-    <div>
-      <ul class="flex gap-2">
-        {% if user.is_authenticated %}
-        <li class="{% if request.path == shipping_addresses %}text-orange-400{% endif %}">
-          <a href="{{ shipping_addresses }}">
-            Mis direcciones
-            <span class="fas fa-location-arrow"></span>
-          </a>
-        </li>
-        {% endif %}
-        <li class="{% if request.path == cart %}text-orange-400{% endif %}">
-          <a href="{{ cart }}">
-            Mi carrito
-            <span class="fas fa-shopping-cart"></span>
-          </a>
-        </li>
-      </ul>
-    </div>
 
-    <!-- Botón Hamburguesa (móvil) -->
-    <button id="menu-btn" class="md:hidden focus:outline-none">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
-
-    <!-- Menú (desktop) -->
-    <ul class="hidden md:flex gap-6 font-medium">
-
-
-      {% if user.is_authenticated %}
-      <li>
-        <a href="{% url 'logout' %}" class="flex items-center gap-2 hover:text-orange-400">
-          <span class="fas fa-sign-in-alt"></span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
-          </svg>
-          Logout
-        </a>
-      </li>
-      {% else %}
-      <li>
-        <a href="{{ login }}"
-          class="flex items-center gap-2 hover:text-orange-400 {% if request.path == login %}text-orange-400{% endif %}">
-          <span class="fas fa-user"></span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <!-- BUSCADOR -->
+    <!--     <div class="hidden md:flex flex-1 max-w-2xl">
+      <form action="{% url 'index' %}" method="get" class="w-full flex">
+        <input type="text" name="q" placeholder="Buscar productos..."
+          class="w-full px-3 py-2 text-gray-800 rounded-l-md focus:outline-none">
+        <button type="submit"
+          class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-r-md font-semibold hover:bg-yellow-500 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
           </svg>
-          Login
-        </a>
-      </li>
-      <li>
-        <a href="{{ register }}"
-          class="flex items-center gap-2 hover:text-orange-400 {% if request.path == register %}text-orange-400{% endif %}">
-          <span class="fas fa-user-plus"></span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-          </svg>
-          Registro
-        </a>
-      </li>
+        </button>
+      </form>
+    </div> -->
+
+    <!-- BOTONES DERECHA -->
+    <div class="flex items-center gap-4">
+      {% if user.is_authenticated %}
+      <a href="{{ completeds }}" class="hover:text-yellow-400 text-sm flex items-center gap-1">
+        <span class="fas fa-box"></span> Pedidos
+      </a>
+      <a href="{{ shipping_addresses }}" class="hover:text-yellow-400 text-sm flex items-center gap-1">
+        <span class="fas fa-map-marker-alt"></span> Direcciones
+      </a>
+      <a href="{{ cart }}" class="relative hover:text-yellow-400 flex items-center gap-1">
+        <span class="fas fa-shopping-cart text-lg"></span>
+        <span>Carrito</span>
+        <!-- Si deseas agregar cantidad en el carrito -->
+        {% if cart_item_count > 0 %}
+        <span class="absolute -top-2 -right-3 bg-yellow-400 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full">
+          {{ cart_item_count }}
+        </span>
+        {% endif %}
+      </a>
       {% endif %}
 
 
-    </ul>
+      {% if user.is_authenticated %}
+      <a href="{% url 'logout' %}" class="hover:text-yellow-400 text-sm flex items-center gap-1">
+        <span class="fas fa-sign-out-alt"></span> Logout
+      </a>
+      {% else %}
+      <a href="{{ login }}"
+        class="hover:text-yellow-400 text-sm flex items-center gap-1 {% if request.path == login %}text-yellow-400{% endif %}">
+        <span class="fas fa-user"></span> Login
+      </a>
+      <a href="{{ register }}"
+        class="hover:text-yellow-400 text-sm flex items-center gap-1 {% if request.path == register %}text-yellow-400{% endif %}">
+        <span class="fas fa-user-plus"></span> Registro
+      </a>
+      {% endif %}
+
+      <!-- Menú móvil -->
+      <button id="menu-btn" class="md:hidden focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
   </div>
 
-  <!-- Menú (móvil) -->
-  <ul id="mobile-menu" class="hidden flex-col gap-4 mt-4 md:hidden font-medium">
-    <li>
-      <a href="#" class="flex items-center gap-2 hover:text-orange-400">
-
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <!-- BUSCADOR (móvil) -->
+  <div class="px-4 pb-2 md:hidden">
+    <form action="{% url 'index' %}" method="get" class="flex">
+      <input type="text" name="q" placeholder="Buscar..."
+        class="w-full px-3 py-2 text-gray-800 rounded-l-md focus:outline-none">
+      <button type="submit"
+        class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-r-md font-semibold hover:bg-yellow-500 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
         </svg>
-        Login
-      </a>
-    </li>
-    <li>
-      <a href="#" class="flex items-center gap-2 hover:text-orange-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-        Registro
-      </a>
-    </li>
-    <li>
-      <a href="#" class="flex items-center gap-2 hover:text-orange-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
-        </svg>
-        Logout
-      </a>
-    </li>
+      </button>
+    </form>
+  </div>
+
+  <!-- MENÚ MÓVIL -->
+  <ul id="mobile-menu" class="hidden flex-col gap-2 px-4 pb-4 md:hidden text-sm font-medium">
+    {% if user.is_authenticated %}
+    <li><a href="{{ completeds }}" class="block py-1 hover:text-yellow-400">Mis pedidos</a></li>
+    <li><a href="{{ shipping_addresses }}" class="block py-1 hover:text-yellow-400">Mis direcciones</a></li>
+    <li><a href="{% url 'logout' %}" class="block py-1 hover:text-yellow-400">Logout</a></li>
+    {% else %}
+    <li><a href="{{ login }}" class="block py-1 hover:text-yellow-400">Login</a></li>
+    <li><a href="{{ register }}" class="block py-1 hover:text-yellow-400">Registro</a></li>
+    {% endif %}
+    <li><a href="{{ cart }}" class="block py-1 hover:text-yellow-400">Carrito</a></li>
   </ul>
 </nav>
 
 <script>
   const btn = document.getElementById("menu-btn");
   const menu = document.getElementById("mobile-menu");
-  btn.addEventListener("click", () => {
-    menu.classList.toggle("hidden");
-  });
+  btn.addEventListener("click", () => menu.classList.toggle("hidden"));
 </script>

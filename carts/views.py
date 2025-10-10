@@ -13,7 +13,7 @@ def cart(request):
     #request.session['card_id'] = None
         
     cart = get_or_create_cart(request)
-    print("cart", cart.products)
+    #print("cart", cart.products)
     return render(request, 'carts/cart.html', {'cart': cart})
 
 def add(request):

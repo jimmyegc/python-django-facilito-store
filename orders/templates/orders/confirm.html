@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block breadcrumb %}
+{% include 'orders/snippets/breadcrumb.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="col-8 mx-auto p-6">
+
+  <!-- Título -->
+  <h2 class="text-2xl font-semibold mb-6">Confirma tu pedido</h2>
+
+  <!-- Información de envío, pago y promoción -->
+  <div class="card mb-6 p-4 bg-white rounded-lg shadow-md">
+    <div class="row gap-4">
+
+      <!-- Dirección de envío -->
+      <div class="col-4">
+        <h3 class="font-medium mb-2">Dirección de envío</h3>
+        <p>{{ shipping_address.address }}</p>
+        <p>{{ shipping_address.line1 }}</p>
+        <p>{{ shipping_address.reference }}</p>
+        <p>{{ shipping_address.postal_code }}</p>
+      </div>
+
+      <!-- Método de pago -->
+      <div class="col-4">
+        <h3 class="font-medium mb-2">Método de pago</h3>
+        <p>Tarjeta terminación 4242</p>
+      </div>
+
+      <!-- Código promocional -->
+      <div class="col-4">
+        <h3 class="font-medium mb-2">Código promocional</h3>
+        <form method="post" action="{% url 'promo_codes:validate' %}" id="promocode-form"
+          class="flex gap-2 items-center">
+          {% csrf_token %}
+
+          <input type="text" name="code" value="{{ order.promo_code.code|default_if_none:'' }}"
+            placeholder="Código de promoción" {% if order.promo_code %}readonly{% endif %}
+            class="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
+
+          {% if not order.promo_code %}
+          <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 rounded transition">
+            Aplicar
+          </button>
+          {% else %}
+          <button type="button" class="bg-gray-400 text-white px-4 py-1 rounded cursor-not-allowed" disabled>
+            Aplicado
+          </button>
+          {% endif %}
+        </form>
+
+        <div class="text-white p-2 mt-2 rounded-xl inline-block" id="promocode-success">
+          {% if order.promo_code %}
+          Código aplicado exitosamente
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Resumen de productos -->
+  <div class="card mb-6 bg-white rounded-lg shadow-md">
+    <div class="card-body p-4">
+      <h3 class="font-medium mb-4">Productos en tu pedido</h3>
+      {% for product in cart.products.all %}
+      {% include 'orders/snippets/product.html' %}
+      {% endfor %}
+
+      <!-- Total -->
+      <div class="mt-4 text-right font-semibold text-lg">
+        Total: ${{ cart.total_price|floatformat:2 }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="flex justify-between">
+    <a href="{% url 'index' %}" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+      Seguir comprando
+    </a>
+    <a href="{% url 'index' %}" class="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark">
+      Confirmar pedido
+    </a>
+  </div>
+
+</div>
+<div class="col">
+  {% url 'orders:complete' as next_url %}
+  {% include 'orders/snippets/resume.html' with next_url=next_url %}
+  <div>
+    <a href="{% url 'orders:cancel' %}" class="bg-red-500 text-white rounded px-6 py-3">Cancelar orden</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+  const form = document.getElementById('promocode-form')
+  form.addEventListener('submit', function (e) {
+    e.preventDefault()
+    const input = this.code
+    const code = input.value
+    const url = this.action + '?code=' + code
+    const div_total = document.getElementById('order-total')
+    const div_success = document.getElementById('promocode-success')
+
+    fetch(url)
+      .then(response => response.json())
+      .then(response => {
+        if (response.status === true) {
+          div_total.innerHTML = "$" + response.total
+          div_success.innerHTML = "Código aplicado exitosamente."
+          div_success.classList.remove('bg-red-500')
+          div_success.classList.add('bg-green-500')
+          input.readOnly = true
+        } else {
+          div_success.innerHTML = "Código no válido."
+          div_success.classList.remove('bg-green-500')
+          div_success.classList.add('bg-red-500')
+        }
+      })
+
+  })
+</script>
+{% endblock %}

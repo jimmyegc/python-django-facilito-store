@@ -10,16 +10,73 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 text-gray-900 font-sans">
+
+  <!-- Navbar fija -->
   {% include 'navbar.html' %}
+
+  <!-- Espaciado para compensar la navbar fija -->
+  <div class="pt-20"></div>
+
+  <!-- Mensajes del sistema -->
   {% include 'messages.html' %}
+
+  <!-- Breadcrumb -->
   {% block breadcrumb %}
   {% endblock %}
-  <div class="max-w-6xl border mx-auto mt-4 p-4">
-    {% block content %}
-    {% endblock %}
-  </div>
+
+  <!-- Contenedor principal -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+    <div class="bg-white shadow-sm rounded-2xl p-6 border border-gray-200">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </main>
+
+  <!-- Footer opcional (al estilo Amazon) -->
+  <footer class="bg-gray-900 text-gray-300 text-sm mt-10">
+    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div>
+        <h4 class="font-semibold text-white mb-2">Conócenos</h4>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:text-yellow-400">Sobre Facilito Store</a></li>
+          <li><a href="#" class="hover:text-yellow-400">Empleo</a></li>
+          <li><a href="#" class="hover:text-yellow-400">Noticias</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white mb-2">Ayuda</h4>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:text-yellow-400">Tu cuenta</a></li>
+          <li><a href="#" class="hover:text-yellow-400">Devoluciones</a></li>
+          <li><a href="#" class="hover:text-yellow-400">Envíos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-white mb-2">Pago y Seguridad</h4>
+        <ul class="space-y-1">
+          <li><a href="#" class="hover:text-yellow-400">Métodos de pago</a></li>
+          <li><a href="#" class="hover:text-yellow-400">Privacidad</a></li>
+          <li><a href="#" class="hover:text-yellow-400">Condiciones</a></li>
+        </ul>
+      </div>
+      <div class="flex flex-col items-start md:items-end">
+        <a href="/admin" class="flex items-center gap-2 text-yellow-400 font-bold text-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 9.75L12 3l9 6.75V21a.75.75 0 01-.75.75h-4.5a.75.75 0 01-.75-.75V15h-6v6a.75.75 0 01-.75.75h-4.5A.75.75 0 013 21V9.75z" />
+          </svg>
+          Facilito Store
+        </a>
+        <p class="mt-2 text-gray-500">&copy; {{ now|date:"Y" }} Facilito Store</p>
+      </div>
+    </div>
+  </footer>
+
 </body>
+
 <script src="https://kit.fontawesome.com/9af4a6305a.js" crossorigin="anonymous"></script>
+{% block javascript %}
+{% endblock %}
 
 </html>

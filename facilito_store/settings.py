@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'users',
     'carts',
     'orders',
-    'shipping_addresses'
+    'shipping_addresses',
+    'promo_codes'
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'facilito_store.context_processors.cart_item_count',
             ],
         },
     },
@@ -119,6 +121,13 @@ USE_I18N = True
 
 USE_TZ = True
 
+from decouple import config
+
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = config('USER_MAIL')
+EMAIL_HOST_PASSWORD = config('USER_MAIL_PASSWORD')
+EMAIL_USE_TLS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

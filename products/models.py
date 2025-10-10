@@ -10,7 +10,7 @@ class Product(models.Model):
     slug = models.SlugField(unique=True, blank=False, null=False)
     image = models.ImageField(upload_to='products/', null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    #stock = models.BooleanField(default=True)
+    stock = models.BooleanField(default=True)
     
     """ def save(self, *args, **kwargs):
         if not self.slug:

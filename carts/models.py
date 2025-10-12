@@ -21,6 +21,8 @@ class Cart(models.Model):
     def __str__(self):
         return self.cart_id
     
+    
+    
     def update_totals(self):
         self.update_subtotal()
         self.update_total()
@@ -40,6 +42,9 @@ class Cart(models.Model):
     
     def products_related(self):
         return self.cartproducts_set.select_related('product')
+
+    def has_products(self):
+        return self.products.exists()
 
     @property
     def order(self):
@@ -61,6 +66,9 @@ class CartProducts(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     objects = CartProductsManager()
+    
+    def get_total_price(self):
+        return self.product.price * self.quantity
     
     def update_quantity(self, quantity=1):
         self.quantity = quantity

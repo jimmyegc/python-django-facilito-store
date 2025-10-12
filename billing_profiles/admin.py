@@ -1,3 +1,4 @@
 from django.contrib import admin
+from billing_profiles.models import BillingProfile
 
-# Register your models here.
+admin.site.register(BillingProfile)

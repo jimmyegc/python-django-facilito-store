@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'carts',
     'orders',
     'shipping_addresses',
-    'promo_codes'
+    'promo_codes',
+    'billing_profiles',
+    'charges',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +130,10 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = config('USER_MAIL')
 EMAIL_HOST_PASSWORD = config('USER_MAIL_PASSWORD')
 EMAIL_USE_TLS = True
+
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+STRIPE_PRIVATE_KEY = config('STRIPE_PRIVATE_KEY')
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

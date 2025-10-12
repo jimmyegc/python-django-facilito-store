@@ -2,6 +2,7 @@ import threading
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from carts.utils import get_or_create_cart
+from charges.models import Charge
 from shipping_addresses.models import ShippingAddress
 from .utils import get_or_create_order, breadcrumb, destroy_order
 from carts.utils import destroy_cart
@@ -10,7 +11,7 @@ from .mails import Mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.list import ListView
 from django.db.models.query import EmptyQuerySet
-
+from django.db import transaction
 from .decorators import validate_cart_and_order
 
 class OrderListView(LoginRequiredMixin, ListView):
@@ -24,6 +25,9 @@ class OrderListView(LoginRequiredMixin, ListView):
 @validate_cart_and_order
 def order(request, cart, order):
   
+  if not cart.has_products():
+    return redirect('carts:cart')
+  
   return render(request, 'orders/order.html', {
     'cart': cart,
     'order': order,
@@ -32,7 +36,10 @@ def order(request, cart, order):
 
 @login_required(login_url='login')
 @validate_cart_and_order
-def address(request, cart, order):    
+def address(request, cart, order):     
+    if not cart.has_products():
+      return redirect('carts:cart')
+   
     shipping_address = order.get_or_set_shipping_address()
     can_choose_address = request.user.has_shipping_addresses()
     
@@ -69,7 +76,28 @@ def check_address(request, cart, order, pk):
 
 @login_required(login_url='login') 
 @validate_cart_and_order
+def payment(request, cart, order):
+  
+  if not cart.has_products() or order.shipping_address is None:
+    return redirect('carts:cart')
+  
+  billing_profile = order.get_or_set_billing_profile()
+  return render(request, 'orders/payment.html',{
+    'cart': cart,
+    'order': order,      
+    'billing_profile': billing_profile,
+    'breadcrumb': breadcrumb(address=True, payment=True)
+  })
+
+@login_required(login_url='login') 
+@validate_cart_and_order
 def confirm(request, cart, order):        
+    print('shipping_address', order.shipping_address)
+    print('billing_profile', order.billing_profile)
+    
+    if not cart.has_products() or order.shipping_address is None or order.billing_profile is None:
+        return redirect('carts:cart')
+  
     shipping_address = order.shipping_address
     if shipping_address is None:
       return redirect('orders:address')
@@ -78,7 +106,7 @@ def confirm(request, cart, order):
       'cart': cart,
       'order': order,
       'shipping_address': shipping_address,
-      'breadcrumb': breadcrumb(address=True, confirmation=True)
+      'breadcrumb': breadcrumb(address=True, payment=True, confirmation=True)
     })
 
 @login_required(login_url='login') 
@@ -100,14 +128,18 @@ def cancel(request, cart, order):
 def complete(request, cart, order):        
     if request.user.id != order.user_id:
         return redirect('carts:cart')
+    
+    charge = Charge.objects.create_charge(order)
+    if charge:            
+        with transaction.atomic():
+          order.complete()
+        
+          thread = threading.Thread(target=Mail.send_complete_order, args=(order, request.user))
+          thread.start()    
+        
+          destroy_cart(request)
+          destroy_order(request)
+        
+          messages.error(request, 'Compra completada exitosamente.')
       
-    order.complete()
-    
-    thread = threading.Thread(target=Mail.send_complete_order, args=(order, request.user))
-    thread.start()    
-    
-    destroy_cart(request)
-    destroy_order(request)
-    
-    messages.error(request, 'Compra completada exitosamente.')
     return redirect('index')

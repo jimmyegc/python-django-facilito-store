@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto py-8 px-4">
+  <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
+    Métodos de pago
+  </h2>
+
+  <!-- Lista de tarjetas -->
+  <div class="space-y-4">
+    {% for billing_profile in object_list %}
+    {% include 'billing_profiles/snippets/billing_profile.html' %}
+    {% empty %}
+    <p class="text-gray-500 dark:text-gray-400 text-sm text-center">No tienes métodos de pago registrados.</p>
+    {% endfor %}
+
+    <!-- Botón agregar -->
+    <div class="mt-6 text-center">
+      <a href="{% url 'billing_profiles:create' %}"
+        class="inline-block bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-medium py-2 px-4 rounded-md shadow-sm">
+        + Agregar método de pago
+      </a>
+    </div>
+
+
+  </div>
+  {% endblock %}

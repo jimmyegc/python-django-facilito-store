@@ -5,18 +5,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% if stripe_public_key %}
+  <meta name="stripe_public_key" content="{{ stripe_public_key }}">
+  {% endif %}
   <title></title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}" />
+
+  {% block css %}
+  {% endblock %}
 </head>
 
-<body class="bg-gray-100 text-gray-900 font-sans">
+<body class="bg-gray-100 dark:bg-gray-800 text-gray-900 font-sans min-h-screen transition-colors duration-300">
 
   <!-- Navbar fija -->
   {% include 'navbar.html' %}
 
   <!-- Espaciado para compensar la navbar fija -->
   <div class="pt-20"></div>
+
+  <div class="bg-surface text-text p-6 border border-border rounded-lg shadow">
+    hola
+    <button class="bg-primary hover:bg-primary-hover text-text-inverse rounded px-4 py-2">
+      Comprar
+    </button>
+  </div>
 
   <!-- Mensajes del sistema -->
   {% include 'messages.html' %}
@@ -27,56 +47,21 @@
 
   <!-- Contenedor principal -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
-    <div class="bg-white shadow-sm rounded-2xl p-6 border border-gray-200">
-      {% block content %}
-      {% endblock %}
+    <div
+      class="bg-white shadow-sm rounded-2xl p-6 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100">
+      {% block content %}{% endblock %}
     </div>
   </main>
 
-  <!-- Footer opcional (al estilo Amazon) -->
-  <footer class="bg-gray-900 text-gray-300 text-sm mt-10">
-    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-      <div>
-        <h4 class="font-semibold text-white mb-2">Conócenos</h4>
-        <ul class="space-y-1">
-          <li><a href="#" class="hover:text-yellow-400">Sobre Facilito Store</a></li>
-          <li><a href="#" class="hover:text-yellow-400">Empleo</a></li>
-          <li><a href="#" class="hover:text-yellow-400">Noticias</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-white mb-2">Ayuda</h4>
-        <ul class="space-y-1">
-          <li><a href="#" class="hover:text-yellow-400">Tu cuenta</a></li>
-          <li><a href="#" class="hover:text-yellow-400">Devoluciones</a></li>
-          <li><a href="#" class="hover:text-yellow-400">Envíos</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-white mb-2">Pago y Seguridad</h4>
-        <ul class="space-y-1">
-          <li><a href="#" class="hover:text-yellow-400">Métodos de pago</a></li>
-          <li><a href="#" class="hover:text-yellow-400">Privacidad</a></li>
-          <li><a href="#" class="hover:text-yellow-400">Condiciones</a></li>
-        </ul>
-      </div>
-      <div class="flex flex-col items-start md:items-end">
-        <a href="/admin" class="flex items-center gap-2 text-yellow-400 font-bold text-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 9.75L12 3l9 6.75V21a.75.75 0 01-.75.75h-4.5a.75.75 0 01-.75-.75V15h-6v6a.75.75 0 01-.75.75h-4.5A.75.75 0 013 21V9.75z" />
-          </svg>
-          Facilito Store
-        </a>
-        <p class="mt-2 text-gray-500">&copy; {{ now|date:"Y" }} Facilito Store</p>
-      </div>
-    </div>
-  </footer>
+  {% include 'footer.html' %}
+
+  <script src="https://kit.fontawesome.com/9af4a6305a.js" crossorigin="anonymous"></script>
+
+  {% block javascript %}
+  {% endblock %}
 
 </body>
 
-<script src="https://kit.fontawesome.com/9af4a6305a.js" crossorigin="anonymous"></script>
-{% block javascript %}
-{% endblock %}
+
 
 </html>

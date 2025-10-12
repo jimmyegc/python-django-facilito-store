@@ -1,24 +1,42 @@
-<div class="bg-white rounded-2xl shadow-md hover:shadow-lg transition flex flex-col overflow-hidden">
+{% load product_extras %}
+<div
+  class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-lg dark:hover:shadow-gray-700 transition flex flex-col overflow-hidden border border-gray-100 dark:border-gray-700">
   <!-- Imagen del producto -->
-  <div class="overflow-hidden">
+  <div class="relative overflow-hidden rounded-lg">
     <img src="{{ product.image.url }}" alt="{{ product.title }}"
-      class="w-full h-56 object-cover hover:scale-105 transform transition duration-300 ease-in-out">
+      class="w-full h-56 object-cover transition-transform duration-300 ease-in-out hover:scale-105">
+
+    {% if product.stock == 0 %}
+    <!-- Capa de "no disponible" -->
+    <div class="absolute inset-0 bg-gray-900/70 flex items-center justify-center">
+      <span class="text-white text-lg font-semibold uppercase tracking-wide">
+        No disponible
+      </span>
+    </div>
+    {% endif %}
   </div>
+
 
   <!-- Contenido -->
   <div class="p-4 flex flex-col flex-1">
     <!-- Título -->
-    <h3 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2 line-clamp-2">
       {{ product.title }}
     </h3>
 
     <!-- Precio -->
-    <p class="text-xl font-bold text-yellow-500 mb-2">
-      ${{ product.price }}
+    <p class="text-xl font-bold text-yellow-500 dark:text-yellow-400 mb-2">
+      {{ product.price|price_format }}
     </p>
 
     <!-- Stock -->
-    <span class="text-sm font-medium mb-3 {% if product.stock %}text-green-600{% else %}text-red-600{% endif %}">
+    <span class="text-sm font-medium mb-3
+      {% if product.stock %}
+        text-green-600 dark:text-green-400
+      {% else %}
+        text-red-600 dark:text-red-400
+      {% endif %}
+    ">
       {% if product.stock %}
       Disponible
       {% else %}
@@ -27,9 +45,9 @@
     </span>
 
     <!-- Botón -->
-    <a href="{% url 'products:product' product.slug %}"
-      class="mt-auto w-full bg-yellow-400 text-gray-900 font-semibold py-2 px-4 rounded-lg text-center hover:bg-yellow-500 transition shadow"
-      {% if not product.stock %} aria-disabled="true" {% endif %}>
+    <a href="{% url 'products:product' product.slug %}" class="mt-auto w-full bg-yellow-400 text-gray-900 font-semibold py-2 px-4 rounded-lg text-center
+             hover:bg-yellow-500 dark:bg-yellow-500 dark:text-gray-900 dark:hover:bg-yellow-400
+             transition shadow dark:shadow-gray-700" {% if not product.stock %} aria-disabled="true" {% endif %}>
       Ver más
     </a>
   </div>

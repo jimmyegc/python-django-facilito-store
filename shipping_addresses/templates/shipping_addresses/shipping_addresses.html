@@ -1,16 +1,49 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
-  <h2 class="title">Mis direcciones</h2>
-  <br>
-  <a href="{% url 'shipping_addresses:create' %}"
-    class="btn-primary inline-block px-6 py-2 rounded-full font-medium shadow transition">Agregar nueva dirección</a>
+<div class="max-w-3xl mx-auto py-8 px-4">
+  <h2 class="title mb-6">Mis direcciones</h2>
 
-  <div class="mt-4">
+  {% if object_list %}
+  <!-- Lista de direcciones -->
+  <div class="space-y-4">
     {% for address in object_list %}
     {% include 'shipping_addresses/snippets/shipping_address.html' with edit=True %}
     {% endfor %}
   </div>
+
+  <!-- Botón agregar nueva -->
+  <div class="mt-6 text-center">
+    <a href="{% url 'shipping_addresses:create' %}" class="px-5 py-2 rounded-full font-medium text-sm transition shadow"
+      style="background-color: rgb(var(--color-primary)); color: rgb(var(--color-bg-card));">
+      ➕ Agregar nueva dirección
+    </a>
+  </div>
+
+  {% else %}
+  <!-- Placeholder cuando no hay direcciones -->
+  <div class="flex flex-col items-center justify-center text-center py-16 px-6 rounded-2xl border border-dashed"
+    style="border-color: rgba(var(--color-text), 0.2); background-color: rgba(var(--color-bg-card), 0.4);">
+
+    <!-- Icono -->
+    <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-full"
+      style="background-color: rgba(var(--color-primary), 0.1); color: rgb(var(--color-primary));">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+          d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3zM5.121 17.804A9.004 9.004 0 0112 15c2.21 0 4.21.803 5.879 2.121M12 22s8-4.5 8-11a8 8 0 10-16 0c0 6.5 8 11 8 11z" />
+      </svg>
+    </div>
+
+    <!-- Texto -->
+    <h3 class="text-lg font-semibold mb-2" style="color: rgb(var(--color-text));">No tienes direcciones guardadas</h3>
+    <p class="text-sm opacity-80 mb-6">Agrega una dirección para tus próximos envíos.</p>
+
+    <!-- Botón de acción -->
+    <a href="{% url 'shipping_addresses:create' %}"
+      class="btn-primary px-5 py-2 rounded-full font-medium text-sm transition">
+      📍 Agregar dirección
+    </a>
+  </div>
+  {% endif %}
 </div>
 {% endblock %}

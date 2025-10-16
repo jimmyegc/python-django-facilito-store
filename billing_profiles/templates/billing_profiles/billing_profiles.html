@@ -3,26 +3,40 @@
 
 {% block content %}
 <div class="max-w-3xl mx-auto py-8 px-4">
-  <h2 class="title mb-6">
-    Métodos de pago
-  </h2>
+  <h2 class="title mb-6">Métodos de pago</h2>
 
-  <!-- Lista de tarjetas -->
+  {% if object_list %}
+  <!-- Lista de métodos de pago -->
   <div class="space-y-4">
     {% for billing_profile in object_list %}
     {% include 'billing_profiles/snippets/billing_profile.html' %}
-    {% empty %}
-    <p class="text-gray-500 dark:text-gray-400 text-sm text-center">No tienes métodos de pago registrados.</p>
     {% endfor %}
+  </div>
 
-    <!-- Botón agregar -->
-    <div class="mt-6 text-center">
-      <a href="{% url 'billing_profiles:create' %}"
-        class="btn-primary inline-block bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-medium py-2 px-4 rounded-md shadow-sm">
-        + Agregar método de pago
-      </a>
+  {% else %}
+  <!-- Placeholder cuando no hay métodos de pago -->
+  <div class="flex flex-col items-center justify-center text-center py-16 px-6 rounded-2xl border border-dashed"
+    style="border-color: rgba(var(--color-text), 0.2); background-color: rgba(var(--color-bg-card), 0.4);">
+
+    <!-- Icono -->
+    <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-full"
+      style="background-color: rgba(var(--color-primary), 0.1); color: rgb(var(--color-primary));">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+          d="M3 10h18M7 15h1m4 0h5m-8 4h8a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2h3z" />
+      </svg>
     </div>
 
+    <!-- Texto -->
+    <h3 class="text-lg font-semibold mb-2" style="color: rgb(var(--color-text));">No tienes métodos de pago</h3>
+    <p class="text-sm opacity-80 mb-6">Agrega una tarjeta para realizar compras fácilmente.</p>
 
+    <!-- Botón de acción -->
+    <a href="{% url 'billing_profiles:create' %}"
+      class="btn-primary px-5 py-2 rounded-full font-medium text-sm transition">
+      💳 Agregar método de pago
+    </a>
   </div>
-  {% endblock %}
+  {% endif %}
+</div>
+{% endblock %}

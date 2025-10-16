@@ -5,6 +5,7 @@
 {% url 'shipping_addresses:shipping_addresses' as shipping_addresses %}
 {% url 'orders:completeds' as completeds %}
 {% url 'billing_profiles:billing_profiles' as billing_profiles %}
+
 <nav class="fixed w-full top-0 z-50 shadow-md backdrop-blur-md transition-colors duration-300"
   style="background-color: rgb(var(--color-bg-card)); color: rgb(var(--color-text));">
   <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
@@ -17,13 +18,13 @@
     </a>
 
     <!-- Botón de tema -->
-    <button id="theme-toggle" class="p-2 rounded-full transition"
+    <button id="theme-toggle" class="p-2 rounded-full transition hidden md:block"
       style="background-color: rgba(var(--color-primary), 0.15); color: rgb(var(--color-text));">
       <span id="theme-icon" class="text-lg">🌞</span>
     </button>
 
-    <!-- LINKS DERECHA -->
-    <div class="flex items-center gap-4 text-sm font-medium">
+    <!-- LINKS DESKTOP -->
+    <div class="hidden md:flex items-center gap-4 text-sm font-medium">
       {% if user.is_authenticated %}
       <a href="{{ completeds }}" class="flex items-center gap-1 hover:opacity-80 transition">📦 Pedidos</a>
       <a href="{{ billing_profiles }}" class="flex items-center gap-1 hover:opacity-80 transition">💳 Pagos</a>
@@ -53,7 +54,8 @@
     </div>
 
     <!-- Botón menú móvil -->
-    <button id="menu-btn" class="md:hidden focus:outline-none">
+    <button id="menu-btn" class="md:hidden focus:outline-none p-2 rounded-md transition"
+      style="background-color: rgba(var(--color-primary), 0.1);">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
@@ -61,33 +63,67 @@
   </div>
 
   <!-- MENÚ MÓVIL -->
-  <ul id="mobile-menu" class="hidden flex-col gap-2 px-4 pb-4 md:hidden text-sm font-medium">
+  <div id="mobile-menu"
+    class="hidden flex-col md:hidden px-4 pb-4 text-sm font-medium transition-all duration-300 ease-in-out bg-opacity-90"
+    style="background-color: rgb(var(--color-bg-card));">
+    <div class="flex justify-end mb-2">
+      <!-- Tema dentro del menú móvil -->
+      <button id="theme-toggle-mobile" class="p-2 rounded-full transition"
+        style="background-color: rgba(var(--color-primary), 0.15); color: rgb(var(--color-text));">
+        <span id="theme-icon-mobile" class="text-lg">🌞</span>
+      </button>
+    </div>
     {% if user.is_authenticated %}
-    <li><a href="{{ completeds }}" class="block py-1 hover:opacity-80">Mis pedidos</a></li>
-    <li><a href="{{ shipping_addresses }}" class="block py-1 hover:opacity-80">Mis direcciones</a></li>
-    <li><a href="{% url 'logout' %}" class="block py-1 hover:opacity-80">Logout</a></li>
+    <a href="{{ completeds }}" class="block py-2 border-b border-gray-200 dark:border-gray-700">📦 Mis pedidos</a>
+    <a href="{{ billing_profiles }}" class="block py-2 border-b border-gray-200 dark:border-gray-700">💳 Pagos</a>
+    <a href="{{ shipping_addresses }}" class="block py-2 border-b border-gray-200 dark:border-gray-700">📍
+      Direcciones</a>
+    <a href="{{ cart }}" class="block py-2 border-b border-gray-200 dark:border-gray-700">🛒 Carrito</a>
+    <a href="{% url 'logout' %}" class="block py-2 hover:opacity-80">🚪 Logout</a>
     {% else %}
-    <li><a href="{{ login }}" class="block py-1 hover:opacity-80">Login</a></li>
-    <li><a href="{{ register }}" class="block py-1 hover:opacity-80">Registro</a></li>
+    <a href="{{ login }}" class="block py-2 border-b border-gray-200 dark:border-gray-700">🔐 Login</a>
+    <a href="{{ register }}" class="block py-2 hover:opacity-80">🧾 Registro</a>
     {% endif %}
-    <li><a href="{{ cart }}" class="block py-1 hover:opacity-80">Carrito</a></li>
-  </ul>
+  </div>
 </nav>
 
 <script>
-  const themeToggle = document.getElementById("theme-toggle");
-  const icon = document.getElementById("theme-icon");
+  // Toggle del tema (desktop + móvil)
   const root = document.documentElement;
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeToggleMobile = document.getElementById("theme-toggle-mobile");
+  const icon = document.getElementById("theme-icon");
+  const iconMobile = document.getElementById("theme-icon-mobile");
 
-  if (localStorage.theme === 'dark') {
-    root.classList.add('dark');
-    icon.textContent = '🌙';
+  function setTheme(isDark) {
+    if (isDark) {
+      root.classList.add('dark');
+      localStorage.theme = 'dark';
+      icon.textContent = iconMobile.textContent = '🌙';
+    } else {
+      root.classList.remove('dark');
+      localStorage.theme = 'light';
+      icon.textContent = iconMobile.textContent = '🌞';
+    }
   }
 
-  themeToggle.addEventListener("click", () => {
-    root.classList.toggle("dark");
-    const isDark = root.classList.contains("dark");
-    localStorage.theme = isDark ? 'dark' : 'light';
-    icon.textContent = isDark ? '🌙' : '🌞';
+  // Estado inicial
+  setTheme(localStorage.theme === 'dark');
+
+  themeToggle?.addEventListener("click", () => {
+    setTheme(!root.classList.contains("dark"));
+  });
+
+  themeToggleMobile?.addEventListener("click", () => {
+    setTheme(!root.classList.contains("dark"));
+  });
+
+  // Menú móvil
+  const menuBtn = document.getElementById("menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+    mobileMenu.classList.toggle("flex");
   });
 </script>

@@ -9,46 +9,30 @@
   <meta name="stripe_public_key" content="{{ stripe_public_key }}">
   {% endif %}
   <title></title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-    }
-  </script>
-
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <link rel="stylesheet" href="{% static 'css/components.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
   {% block css %}
   {% endblock %}
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-800 text-gray-900 font-sans min-h-screen transition-colors duration-300">
-
+<body class="min-h-screen font-sans transition-colors duration-300"
+  style="background-color: rgb(var(--color-bg)); color: rgb(var(--color-text));">
   <!-- Navbar fija -->
   {% include 'navbar.html' %}
 
   <!-- Espaciado para compensar la navbar fija -->
   <div class="pt-20"></div>
 
-  <div class="bg-surface text-text p-6 border border-border rounded-lg shadow">
-    hola
-    <button class="bg-primary hover:bg-primary-hover text-text-inverse rounded px-4 py-2">
-      Comprar
-    </button>
-  </div>
-
   <!-- Mensajes del sistema -->
   {% include 'messages.html' %}
 
   <!-- Breadcrumb -->
-  {% block breadcrumb %}
-  {% endblock %}
+  {% block breadcrumb %}{% endblock %}
 
   <!-- Contenedor principal -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
-    <div
-      class="bg-white shadow-sm rounded-2xl p-6 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-100">
+    <div class="shadow-lg rounded-2xl p-8 transition-colors duration-300" style="background-color: rgb(var(--color-bg-card));
+             color: rgb(var(--color-text));">
       {% block content %}{% endblock %}
     </div>
   </main>
@@ -57,11 +41,8 @@
 
   <script src="https://kit.fontawesome.com/9af4a6305a.js" crossorigin="anonymous"></script>
 
-  {% block javascript %}
-  {% endblock %}
-
+  {% block javascript %}{% endblock %}
 </body>
-
 
 
 </html>

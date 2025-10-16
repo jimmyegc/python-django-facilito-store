@@ -3,7 +3,9 @@
 {% load product_extras %}
 
 {% block content %}
-<div class="max-w-md mx-auto mt-8 bg-white rounded-2xl shadow-lg overflow-hidden">
+<div class="max-w-md mx-auto mt-8 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300"
+  style="background-color: rgb(var(--color-card-bg)); color: rgb(var(--color-text));">
+
   <div class="flex flex-col md:flex-row items-center p-6 gap-6">
 
     <!-- Imagen del producto -->
@@ -15,23 +17,29 @@
 
     <!-- Información del producto -->
     <div class="flex-1 flex flex-col gap-3">
-      <p class="text-green-600 font-semibold text-lg">✔ {{ quantity | quantity_add_format }} al carrito.
+      <!-- Mensaje de agregado -->
+      <p class="font-semibold text-lg" style="color: rgb(var(--color-success));">
+        ✔ {{ quantity | quantity_add_format }} al carrito.
       </p>
 
-      <a href="{% url 'products:product' product.slug %}"
-        class="text-gray-800 font-semibold text-xl hover:text-orange-500 transition">
+      <!-- Título del producto -->
+      <a href="{% url 'products:product' product.slug %}" class="font-semibold text-xl transition hover:text-yellow-500"
+        style="color: rgb(var(--color-text));">
         {{ product.title }}
       </a>
 
-      <p class="text-gray-700 font-medium text-lg">${{ product.price | price_format }}</p>
+      <!-- Precio -->
+      <p class="font-medium text-lg" style="color: rgb(var(--color-text-secondary));">
+        {{ product.price | price_format }}
+      </p>
 
+      <!-- Ver carrito -->
       <a href="{% url 'carts:cart' %}"
-        class="mt-2 inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded-full shadow-md transition duration-200 ease-in-out">
+        class="btn-primary mt-2 inline-block font-semibold px-6 py-2 rounded-full shadow-md transition duration-200 ease-in-out hover:scale-105">
         Ver carrito
       </a>
     </div>
 
   </div>
 </div>
-
 {% endblock %}

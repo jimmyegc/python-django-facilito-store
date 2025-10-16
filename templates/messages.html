@@ -1,5 +1,17 @@
 {% if messages %}
-{% for message in messages %}
-<div class="{% if message.tags == 'success'%} alert-success {%else%} alert-danger {%endif%}">{{ message }}</div>
-{% endfor %}
+<div class="space-y-3 w-full max-w-md mx-auto mt-6">
+  {% for message in messages %}
+  {% if message.tags == 'success' %}
+  <div
+    class="alert-success bg-[rgb(var(--color-accent))]/10 border border-[rgb(var(--color-accent))]/40 text-[rgb(var(--color-accent))] dark:bg-[rgb(var(--color-accent))]/20 rounded-md p-3 text-sm font-medium transition-colors duration-300">
+    ✅ {{ message }}
+  </div>
+  {% else %}
+  <div
+    class="alert-danger bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-300 rounded-md p-3 text-sm font-medium transition-colors duration-300">
+    ⚠️ {{ message }}
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
 {% endif %}

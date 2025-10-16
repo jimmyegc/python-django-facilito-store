@@ -1,9 +1,10 @@
 {% load product_extras %}
 
 <div
-  class="flex items-center gap-4 p-4 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+  class="flex items-center gap-4 p-4 border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300 rounded-xl">
+
   <!-- Imagen -->
-  <div class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-xl border">
+  <div class="w-20 h-20 flex-shrink-0 overflow-hidden rounded-xl border border-gray-100 dark:border-gray-700">
     {% if cp.product.image %}
     <img src="{{ cp.product.image.url }}" alt="{{ cp.product.title }}" class="w-full h-full object-cover">
     {% else %}
@@ -15,21 +16,23 @@
   </div>
 
   <!-- Detalles del producto -->
-  <div class="flex-1">
+  <div class="flex-1 flex flex-col gap-1">
     {% if cp.product.slug %}
     <a href="{% url 'products:product' cp.product.slug %}"
-      class="font-semibold text-gray-700 dark:text-gray-200 hover:underline">
+      class="font-semibold text-gray-700 dark:text-gray-200 hover:text-yellow-500 dark:hover:text-yellow-400 transition-colors duration-300">
       {{ cp.product.title }}
     </a>
     {% else %}
     <span class="font-semibold text-gray-700 dark:text-gray-200">{{ cp.product.title }}</span>
     {% endif %}
-    <div class="text-gray-600 dark:text-gray-300">Cantidad: {{ cp.quantity }}</div>
-    <div class="text-gray-600 dark:text-gray-300">Precio unitario: {{ cp.product.price | price_format }}</div>
+    <div class="text-gray-700 dark:text-gray-200 transition-colors duration-300">Cantidad: {{ cp.quantity }}</div>
+    <div class="text-gray-700 dark:text-gray-200 transition-colors duration-300">
+      Precio unitario: {{ cp.product.price | price_format }}
+    </div>
   </div>
 
   <!-- Total del producto -->
-  <div class="text-right font-medium text-gray-700 dark:text-gray-200">
+  <div class="text-right font-medium text-yellow-500 dark:text-yellow-400 transition-colors duration-300">
     Total: {{ cp.get_total_price | price_format }}
   </div>
 </div>

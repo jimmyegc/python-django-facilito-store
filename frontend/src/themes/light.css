@@ -1,0 +1,8 @@
+:root {
+  --color-bg: 255 255 255; /* blanco */
+  --color-text: 34 34 34; /* texto oscuro */
+  --color-primary: 236 92 44; /* naranja */
+  --color-secondary: 41 40 90; /* azul oscuro */
+  --color-accent: 241 140 107; /* salmón */
+  --color-surface: 249 249 249; /* gris muy claro */
+}

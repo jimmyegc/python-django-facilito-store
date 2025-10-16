@@ -4,34 +4,36 @@
 {% block content %}
 {% if cart.products.all %}
 <div class="overflow-x-auto">
-  <table class="min-w-full bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
-    <thead class="bg-gray-100 dark:bg-gray-700">
+  <table class="min-w-full shadow-md rounded-lg overflow-hidden transition-colors duration-300"
+    style="background-color: rgb(var(--color-card-bg)); color: rgb(var(--color-text));">
+    <thead style="background-color: rgb(var(--color-card-header-bg)); color: rgb(var(--color-card-header-text));">
       <tr>
-        <th class="px-4 py-3 text-left text-gray-600 dark:text-gray-300">#</th>
-        <th class="px-4 py-3 text-left text-gray-600 dark:text-gray-300">Imagen</th>
-        <th class="px-4 py-3 text-left text-gray-600 dark:text-gray-300">Producto</th>
-        <th class="px-4 py-3 text-center text-gray-600 dark:text-gray-300">Cantidad</th>
-        <th class="px-4 py-3 text-right text-gray-600 dark:text-gray-300">Precio</th>
+        <th class="px-4 py-3 text-left">#</th>
+        <th class="px-4 py-3 text-left">Imagen</th>
+        <th class="px-4 py-3 text-left">Producto</th>
+        <th class="px-4 py-3 text-center">Cantidad</th>
+        <th class="px-4 py-3 text-right">Precio</th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+    <tbody class="divide-y transition-colors duration-300" style="border-color: rgb(var(--color-divider));">
       {% for cp in cart.products_related %}
       {% with product=cp.product %}
-      <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+      <tr class="hover:opacity-90 transition">
         <td class="px-4 py-3">{{ forloop.counter }}</td>
         <td class="px-4 py-3">
           {% if product.image %}
           <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-16 h-16 object-cover rounded">
           {% else %}
-          <div
-            class="w-16 h-16 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center text-gray-400 dark:text-gray-300">
-            N/A</div>
+          <div class="w-16 h-16 rounded flex items-center justify-center font-medium"
+            style="background-color: rgb(var(--color-bg-secondary)); color: rgb(var(--color-text-secondary));">
+            N/A
+          </div>
           {% endif %}
         </td>
         <td class="px-4 py-3">
-          <div class="flex flex-col">
-            <a href="{% url 'products:product' product.slug %}"
-              class="text-blue-600 dark:text-blue-400 hover:underline">
+          <div class="flex flex-col gap-1">
+            <a href="{% url 'products:product' product.slug %}" class="hover:text-yellow-500 transition"
+              style="color: rgb(var(--color-link));">
               {{ product.title }}
             </a>
             <br>
@@ -39,7 +41,8 @@
           </div>
         </td>
         <td class="px-4 py-3 text-center">{{ cp.quantity }}</td>
-        <td class="px-4 py-3 text-right font-medium text-gray-700 dark:text-gray-200">{{ product.price | price_format }}
+        <td class="px-4 py-3 text-right font-medium" style="color: rgb(var(--color-text));">
+          {{ product.price | price_format }}
         </td>
       </tr>
       {% endwith %}
@@ -50,17 +53,17 @@
 
 <!-- Subtotal y acciones -->
 <div
-  class="mt-6 flex flex-col md:flex-row md:justify-between md:items-center bg-white dark:bg-gray-800 p-4 shadow rounded-lg">
-  <div class="text-gray-700 dark:text-gray-200 font-semibold text-lg">
-    Subtotal({{ cart.products.count }}): <span class="text-orange-500">{{ cart.subtotal | price_format }}</span>
+  class="mt-6 flex flex-col md:flex-row md:justify-between md:items-center p-4 rounded-lg shadow transition-colors duration-300"
+  style="background-color: rgb(var(--color-card-bg)); color: rgb(var(--color-text));">
+  <div class="font-semibold text-lg">
+    Subtotal({{ cart.products.count }}):
+    <span class="text-yellow-500">{{ cart.subtotal | price_format }}</span>
   </div>
   <div class="mt-4 md:mt-0 flex gap-3">
-    <a href="{% url 'index' %}"
-      class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-6 py-2 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+    <a href="{% url 'index' %}" class="btn-secondary px-6 py-2 rounded-full font-medium transition">
       Seguir comprando
     </a>
-    <a href="{% url 'orders:order' %}"
-      class="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">
+    <a href="{% url 'orders:order' %}" class="btn-primary px-6 py-2 rounded-full font-medium shadow transition">
       Proceder al pago
     </a>
   </div>
@@ -68,20 +71,21 @@
 
 {% else %}
 <div
-  class="flex flex-col items-center justify-center min-h-[60vh] text-center bg-gray-50 dark:bg-gray-900 px-4 rounded-2xl shadow-inner">
-  <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md max-w-md w-full">
-    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 w-16 h-16 text-gray-400 dark:text-gray-300" fill="none"
-      viewBox="0 0 24 24" stroke="currentColor">
+  class="flex flex-col items-center justify-center min-h-[60vh] px-4 rounded-2xl shadow-inner transition-colors duration-300"
+  style="background-color: rgb(var(--color-bg)); color: rgb(var(--color-text));">
+  <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-md max-w-md w-full transition-colors duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-4 w-16 h-16" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor" style="color: rgb(var(--color-text-secondary));">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9m-6-9v9" />
     </svg>
 
-    <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2">Tu carrito está vacío 🛒</h2>
-    <p class="text-gray-500 dark:text-gray-400 mb-6">Parece que aún no has agregado ningún producto. ¡Explora nuestras
-      ofertas y encuentra algo que te encante!</p>
+    <h2 class="text-xl font-semibold mb-2" style="color: rgb(var(--color-text));">Tu carrito está vacío 🛒</h2>
+    <p class="mb-6" style="color: rgb(var(--color-text-secondary));">
+      Parece que aún no has agregado ningún producto. ¡Explora nuestras ofertas y encuentra algo que te encante!
+    </p>
 
-    <a href="{% url 'index' %}"
-      class="inline-block bg-orange-500 text-white px-6 py-2 rounded-full font-medium hover:bg-orange-600 transition">
+    <a href="{% url 'index' %}" class="btn-primary inline-block px-6 py-2 rounded-full font-medium shadow transition">
       Seguir comprando
     </a>
   </div>

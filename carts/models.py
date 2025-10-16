@@ -14,14 +14,11 @@ class Cart(models.Model):
     products = models.ManyToManyField(Product, through='CartProducts') #Muchos a muchos
     subtotal = models.DecimalField(default=0.0, max_digits=8, decimal_places=2)
     total =  models.DecimalField(default=0.0, max_digits=8, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    FEE = 0.05 # 0.5%
+    created_at = models.DateTimeField(auto_now_add=True)    
+    FEE = decimal.Decimal('0.05') # 0.5%
     
     def __str__(self):
         return self.cart_id
-    
-    
     
     def update_totals(self):
         self.update_subtotal()
@@ -49,6 +46,10 @@ class Cart(models.Model):
     @property
     def order(self):
         return self.order_set.filter(status=OrderStatus.CREATED).first()
+    
+    @property 
+    def fee(self):
+        return self.subtotal * self.FEE
 
 class CartProductsManager(models.Manager):
     def create_or_update_quantity(self, cart, product, quantity=1):
@@ -68,7 +69,7 @@ class CartProducts(models.Model):
     objects = CartProductsManager()
     
     def get_total_price(self):
-        return self.product.price * self.quantity
+        return self.product.price * decimal.Decimal(self.quantity)
     
     def update_quantity(self, quantity=1):
         self.quantity = quantity

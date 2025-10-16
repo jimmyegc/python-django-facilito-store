@@ -1,16 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex flex-col items-center justify-center min-h-[70vh]">
+<div
+  class="flex flex-col items-center justify-center min-h-[70vh] bg-[rgb(var(--color-bg))] text-[rgb(var(--color-text))] transition-colors duration-300">
   <!-- Tarjeta de login -->
-  <div class="bg-white border border-gray-200 shadow-md rounded-lg w-full max-w-md p-8">
+  <div
+    class="bg-[rgb(var(--color-surface))] border border-gray-200 dark:border-gray-700 shadow-md rounded-lg w-full max-w-md p-8">
 
     <!-- Logo o título -->
-    <h2 class="text-center text-3xl font-semibold mb-6 text-gray-800">Iniciar sesión</h2>
+    <h2 class="text-center text-3xl font-semibold mb-6 text-[rgb(var(--color-primary))]">Iniciar sesión</h2>
 
     <!-- Mensajes de error -->
     {% if form.errors %}
-    <div class="mb-4 bg-red-50 border border-red-300 text-red-700 text-sm rounded-md p-3">
+    <div
+      class="mb-4 bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-700 text-red-700 dark:text-red-400 text-sm rounded-md p-3">
       {% for field, errors in form.errors.items %}
       <p><strong>{{ field|capfirst }}:</strong> {{ errors|join:", " }}</p>
       {% endfor %}
@@ -22,32 +25,32 @@
 
       <!-- Usuario -->
       <div>
-        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
+        <label for="username" class="block text-sm font-medium mb-1 text-[rgb(var(--color-text))]">Usuario</label>
         <input type="text" name="username" id="username" placeholder="Ingresa tu usuario"
-          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+          class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-primary))] focus:border-[rgb(var(--color-primary))]">
       </div>
 
       <!-- Contraseña -->
       <div>
-        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+        <label for="password" class="block text-sm font-medium mb-1 text-[rgb(var(--color-text))]">Contraseña</label>
         <input type="password" name="password" id="password" placeholder="********"
-          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400">
+          class="w-full border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--color-primary))] focus:border-[rgb(var(--color-primary))]">
       </div>
 
       <!-- Botón -->
       <button type="submit"
-        class="w-full bg-yellow-400 text-gray-900 font-semibold rounded-md py-2 hover:bg-yellow-500 transition">
+        class="w-full bg-[rgb(var(--color-primary))] text-white font-semibold rounded-md py-2 hover:opacity-90 transition">
         Iniciar sesión
       </button>
     </form>
 
     <!-- Separador -->
-    <div class="my-6 border-t border-gray-200"></div>
+    <div class="my-6 border-t border-gray-200 dark:border-gray-700"></div>
 
     <!-- Registro -->
-    <p class="text-sm text-center text-gray-600">
-      ¿Eres nuevo en Facilito Store?
-      <a href="{% url 'register' %}" class="text-yellow-500 hover:text-yellow-600 font-medium">
+    <p class="text-sm text-center text-gray-600 dark:text-gray-400">
+      ¿Eres nuevo en PyStore?
+      <a href="{% url 'register' %}" class="text-[rgb(var(--color-primary))] hover:opacity-80 font-medium">
         Crea tu cuenta
       </a>
     </p>

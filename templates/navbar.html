@@ -1,162 +1,93 @@
+{% load static %}
 {% url 'login' as login %}
 {% url 'register' as register %}
 {% url 'carts:cart' as cart %}
 {% url 'shipping_addresses:shipping_addresses' as shipping_addresses %}
 {% url 'orders:completeds' as completeds %}
 {% url 'billing_profiles:billing_profiles' as billing_profiles %}
-
-<nav
-  class="fixed w-full top-0 z-50 shadow-md bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+<nav class="fixed w-full top-0 z-50 shadow-md backdrop-blur-md transition-colors duration-300"
+  style="background-color: rgb(var(--color-bg-card)); color: rgb(var(--color-text));">
   <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
 
     <!-- LOGO -->
-    <a href="{% url 'index' %}"
-      class="flex items-center gap-2 font-bold text-xl text-yellow-500 hover:text-yellow-400 transition">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M3 9.75L12 3l9 6.75V21a.75.75 0 01-.75.75h-4.5a.75.75 0 01-.75-.75V15h-6v6a.75.75 0 01-.75.75h-4.5A.75.75 0 013 21V9.75z" />
-      </svg>
-      Facilito Store
+    <a href="{% url 'index' %}" class="flex items-center gap-2 font-bold text-xl transition"
+      style="color: rgb(var(--color-primary));">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="PyStore" class="w-10">
+      PyStore
     </a>
 
-    <!-- BUSCADOR (desktop) -->
-    <div class="hidden md:flex flex-1 max-w-2xl">
-      <form action="{% url 'index' %}" method="get" class="w-full flex">
-        <input type="text" name="q" placeholder="Buscar productos..."
-          class="w-full px-3 py-2 rounded-l-md border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition">
-        <button type="submit"
-          class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-r-md font-semibold hover:bg-yellow-500 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
-          </svg>
-        </button>
-      </form>
-    </div>
-
-    <!-- Toggle Theme -->
-    <button id="theme-toggle"
-      class="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
-      <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 hidden" fill="none"
-        viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M12 3v1m0 16v1m8.66-8.66h1M4.34 12H3m15.364 6.364l.707.707M6.343 6.343l-.707-.707m12.728 0l.707-.707M6.343 17.657l-.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-      </svg>
-      <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700 dark:text-gray-300 hidden"
-        fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" />
-      </svg>
+    <!-- Botón de tema -->
+    <button id="theme-toggle" class="p-2 rounded-full transition"
+      style="background-color: rgba(var(--color-primary), 0.15); color: rgb(var(--color-text));">
+      <span id="theme-icon" class="text-lg">🌞</span>
     </button>
 
     <!-- LINKS DERECHA -->
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-4 text-sm font-medium">
       {% if user.is_authenticated %}
-      <a href="{{ completeds }}" class="hover:text-yellow-500 text-sm flex items-center gap-1 transition">
-        <span class="fas fa-box"></span> Pedidos
-      </a>
-      <a href="{{ billing_profiles }}" class="hover:text-yellow-500 text-sm flex items-center gap-1 transition">
-        <span class="fab fa-cc-stripe"></span> Métodos de pago
-      </a>
-      <a href="{{ shipping_addresses }}" class="hover:text-yellow-500 text-sm flex items-center gap-1 transition">
-        <span class="fas fa-map-marker-alt"></span> Direcciones
-      </a>
-      <a href="{{ cart }}" class="relative hover:text-yellow-500 flex items-center gap-1 transition">
-        <span class="fas fa-shopping-cart text-lg"></span>
-        <span>Carrito</span>
+      <a href="{{ completeds }}" class="flex items-center gap-1 hover:opacity-80 transition">📦 Pedidos</a>
+      <a href="{{ billing_profiles }}" class="flex items-center gap-1 hover:opacity-80 transition">💳 Pagos</a>
+      <a href="{{ shipping_addresses }}" class="flex items-center gap-1 hover:opacity-80 transition">📍 Direcciones</a>
+
+      <a href="{{ cart }}" class="relative flex items-center gap-1 hover:opacity-80 transition">
+        🛒 Carrito
         {% if cart_item_count > 0 %}
-        <span class="absolute -top-2 -right-3 bg-yellow-400 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full">
+        <span class="absolute -top-2 -right-3 text-xs font-bold px-1.5 py-0.5 rounded-full"
+          style="background-color: rgb(var(--color-primary)); color: rgb(var(--color-bg-card));">
           {{ cart_item_count }}
         </span>
         {% endif %}
       </a>
-      {% endif %}
 
-      {% if user.is_authenticated %}
-      <a href="{% url 'logout' %}" class="hover:text-yellow-500 text-sm flex items-center gap-1 transition">
-        <span class="fas fa-sign-out-alt"></span> Logout
-      </a>
+      <a href="{% url 'logout' %}" class="flex items-center gap-1 hover:opacity-80 transition">🚪 Logout</a>
       {% else %}
       <a href="{{ login }}"
-        class="hover:text-yellow-500 text-sm flex items-center gap-1 {% if request.path == login %}text-yellow-500{% endif %} transition">
-        <span class="fas fa-user"></span> Login
+        class="flex items-center gap-1 transition hover:opacity-80 {% if request.path == login %}font-semibold{% endif %}">
+        🔐 Login
       </a>
       <a href="{{ register }}"
-        class="hover:text-yellow-500 text-sm flex items-center gap-1 {% if request.path == register %}text-yellow-500{% endif %} transition">
-        <span class="fas fa-user-plus"></span> Registro
+        class="flex items-center gap-1 transition hover:opacity-80 {% if request.path == register %}font-semibold{% endif %}">
+        🧾 Registro
       </a>
       {% endif %}
-
-      <!-- Botón menú móvil -->
-      <button id="menu-btn" class="md:hidden focus:outline-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
     </div>
-  </div>
 
-  <!-- BUSCADOR MÓVIL -->
-  <div class="px-4 pb-2 md:hidden">
-    <form action="{% url 'index' %}" method="get" class="flex">
-      <input type="text" name="q" placeholder="Buscar..."
-        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 rounded-l-md focus:outline-none focus:ring-2 focus:ring-yellow-400 transition">
-      <button type="submit"
-        class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-r-md font-semibold hover:bg-yellow-500 transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
-        </svg>
-      </button>
-    </form>
+    <!-- Botón menú móvil -->
+    <button id="menu-btn" class="md:hidden focus:outline-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
   </div>
 
   <!-- MENÚ MÓVIL -->
   <ul id="mobile-menu" class="hidden flex-col gap-2 px-4 pb-4 md:hidden text-sm font-medium">
     {% if user.is_authenticated %}
-    <li><a href="{{ completeds }}" class="block py-1 hover:text-yellow-500">Mis pedidos</a></li>
-    <li><a href="{{ shipping_addresses }}" class="block py-1 hover:text-yellow-500">Mis direcciones</a></li>
-    <li><a href="{% url 'logout' %}" class="block py-1 hover:text-yellow-500">Logout</a></li>
+    <li><a href="{{ completeds }}" class="block py-1 hover:opacity-80">Mis pedidos</a></li>
+    <li><a href="{{ shipping_addresses }}" class="block py-1 hover:opacity-80">Mis direcciones</a></li>
+    <li><a href="{% url 'logout' %}" class="block py-1 hover:opacity-80">Logout</a></li>
     {% else %}
-    <li><a href="{{ login }}" class="block py-1 hover:text-yellow-500">Login</a></li>
-    <li><a href="{{ register }}" class="block py-1 hover:text-yellow-500">Registro</a></li>
+    <li><a href="{{ login }}" class="block py-1 hover:opacity-80">Login</a></li>
+    <li><a href="{{ register }}" class="block py-1 hover:opacity-80">Registro</a></li>
     {% endif %}
-    <li><a href="{{ cart }}" class="block py-1 hover:text-yellow-500">Carrito</a></li>
+    <li><a href="{{ cart }}" class="block py-1 hover:opacity-80">Carrito</a></li>
   </ul>
 </nav>
 
 <script>
-  // --- Toggle menú móvil ---
-  const btn = document.getElementById("menu-btn");
-  const menu = document.getElementById("mobile-menu");
-  btn.addEventListener("click", () => menu.classList.toggle("hidden"));
-
-  // --- Tema persistente ---
   const themeToggle = document.getElementById("theme-toggle");
-  const sun = document.getElementById("icon-sun");
-  const moon = document.getElementById("icon-moon");
+  const icon = document.getElementById("theme-icon");
+  const root = document.documentElement;
 
-  // Aplicar preferencia guardada
-  if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
+  if (localStorage.theme === 'dark') {
+    root.classList.add('dark');
+    icon.textContent = '🌙';
   }
 
-  // Mostrar icono correcto
-  const updateIcons = () => {
-    const isDark = document.documentElement.classList.contains("dark");
-    sun.classList.toggle("hidden", !isDark);
-    moon.classList.toggle("hidden", isDark);
-  };
-
-  updateIcons();
-
   themeToggle.addEventListener("click", () => {
-    document.documentElement.classList.toggle("dark");
-    localStorage.theme = document.documentElement.classList.contains("dark") ? "dark" : "light";
-    updateIcons();
+    root.classList.toggle("dark");
+    const isDark = root.classList.contains("dark");
+    localStorage.theme = isDark ? 'dark' : 'light';
+    icon.textContent = isDark ? '🌙' : '🌞';
   });
 </script>

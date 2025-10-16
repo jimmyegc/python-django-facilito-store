@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load product_extras %}
 {% block breadcrumb %}
 {% include 'orders/snippets/breadcrumb.html' %}
 {% endblock %}
@@ -8,40 +8,41 @@
 <div class="col-8 mx-auto p-6">
 
   <!-- Título -->
-  <h2 class="text-2xl font-semibold mb-6">Confirma tu pedido</h2>
+  <h2 class="text-2xl font-semibold mb-6 text-gray-700 dark:text-gray-200">Confirma tu pedido</h2>
 
   <!-- Información de envío, pago y promoción -->
-  <div class="card mb-6 p-4 bg-white rounded-lg shadow-md">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6 transition-colors duration-300">
     <div class="row gap-4">
 
       <!-- Dirección de envío -->
       <div class="col-4">
-        <h3 class="font-medium mb-2">Dirección de envío</h3>
-        <p>{{ shipping_address.address }}</p>
-        <p>{{ shipping_address.line1 }}</p>
-        <p>{{ shipping_address.reference }}</p>
-        <p>{{ shipping_address.postal_code }}</p>
+        <h3 class="font-medium mb-2 text-gray-700 dark:text-gray-200">Dirección de envío</h3>
+        <p class="text-gray-600 dark:text-gray-300">{{ shipping_address.address }}</p>
+        <p class="text-gray-600 dark:text-gray-300">{{ shipping_address.line1 }}</p>
+        <p class="text-gray-600 dark:text-gray-300">{{ shipping_address.reference }}</p>
+        <p class="text-gray-600 dark:text-gray-300">{{ shipping_address.postal_code }}</p>
       </div>
 
       <!-- Método de pago -->
       <div class="col-4">
-        <h3 class="font-medium mb-2">Método de pago</h3>
-        <p>Tarjeta terminación {{ order.billing_profile.last4 }}</p>
+        <h3 class="font-medium mb-2 text-gray-700 dark:text-gray-200">Método de pago</h3>
+        <p class="text-gray-600 dark:text-gray-300">Tarjeta terminación {{ order.billing_profile.last4 }}</p>
       </div>
 
       <!-- Código promocional -->
       <div class="col-4">
-        <h3 class="font-medium mb-2">Código promocional</h3>
+        <h3 class="font-medium mb-2 text-gray-700 dark:text-gray-200">Código promocional</h3>
         <form method="post" action="{% url 'promo_codes:validate' %}" id="promocode-form"
           class="flex gap-2 items-center">
           {% csrf_token %}
 
           <input type="text" name="code" value="{{ order.promo_code.code|default_if_none:'' }}"
             placeholder="Código de promoción" {% if order.promo_code %}readonly{% endif %}
-            class="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
+            class="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 flex-1 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300" />
 
           {% if not order.promo_code %}
-          <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 rounded transition">
+          <button type="submit"
+            class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 rounded transition-colors duration-300">
             Aplicar
           </button>
           {% else %}
@@ -51,7 +52,8 @@
           {% endif %}
         </form>
 
-        <div class="text-white p-2 mt-2 rounded-xl inline-block" id="promocode-success">
+        <div id="promocode-success"
+          class="mt-2 p-2 rounded-xl inline-block text-white transition-colors duration-300 {% if order.promo_code %}bg-green-500{% endif %}">
           {% if order.promo_code %}
           Código aplicado exitosamente
           {% endif %}
@@ -62,36 +64,41 @@
   </div>
 
   <!-- Resumen de productos -->
-  <div class="card mb-6 bg-white rounded-lg shadow-md">
-    <div class="card-body p-4">
-      <h3 class="font-medium mb-4">Productos en tu pedido</h3>
-      {% for product in cart.products.all %}
-      {% include 'orders/snippets/product.html' %}
-      {% endfor %}
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6 transition-colors duration-300">
+    <h3 class="font-medium mb-4 text-gray-700 dark:text-gray-200">Productos en tu pedido</h3>
+    {% for cp in cart.products_related %}
+    {% include 'orders/snippets/product.html' with cp=cp %}
+    {% endfor %}
 
-      <!-- Total -->
-      <div class="mt-4 text-right font-semibold text-lg">
-        Total: ${{ cart.total_price|floatformat:2 }}
-      </div>
-    </div>
+
+    <!-- Total -->
+    <!-- <div class="mt-4 text-right font-semibold text-lg text-yellow-500 dark:text-yellow-400">
+      Total: {{ cart.sub_total|price_format }}
+    </div> -->
   </div>
 
   <!-- Botones de acción -->
   <div class="flex justify-between">
-    <a href="{% url 'index' %}" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+    <a href="{% url 'index' %}"
+      class="btn px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300">
       Seguir comprando
     </a>
-    <a href="{% url 'index' %}" class="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark">
+    <!--  <a href="{% url 'index' %}"
+      class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded transition-colors duration-300">
       Confirmar pedido
+    </a> -->
+    <a href="{% url 'orders:cancel' %}" class="btn-danger rounded px-6 py-3 transition-colors duration-300">
+      Cancelar orden
     </a>
   </div>
 
 </div>
-<div class="col">
+
+<div class="col mt-6">
   {% url 'orders:complete' as next_url %}
   {% include 'orders/snippets/resume.html' with next_url=next_url %}
-  <div>
-    <a href="{% url 'orders:cancel' %}" class="bg-red-500 text-white rounded px-6 py-3">Cancelar orden</a>
+  <div class="mt-4">
+
   </div>
 </div>
 {% endblock %}

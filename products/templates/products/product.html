@@ -3,18 +3,20 @@
 
 {% block content %}
 
-<div
-  class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg dark:shadow-gray-800 overflow-hidden flex flex-col md:flex-row border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+<!-- Product Detail -->
+
+<div class="rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row transition-colors duration-300"
+  style="background-color: rgb(var(--color-bg-card)); border: 1px solid rgba(var(--color-border),0.3); color: rgb(var(--color-text));">
 
   <!-- Imagen del producto -->
-  <div
-    class="md:w-1/2 flex items-center justify-center bg-white dark:bg-gray-900 p-6 border-r border-gray-100 dark:border-gray-800">
+  <div class="md:w-1/2 flex items-center justify-center p-6 transition-colors duration-300"
+    style="background-color: rgb(var(--color-bg-card)); border-right: 1px solid rgba(var(--color-border),0.3);">
     {% if product.image %}
     <img src="{{ product.image.url }}" alt="{{ product.title }}"
       class="w-full max-w-sm rounded-xl object-cover shadow-md hover:scale-105 transform transition duration-300 ease-in-out">
     {% else %}
-    <div
-      class="w-full h-64 flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 italic rounded-xl">
+    <div class="w-full h-64 flex items-center justify-center italic rounded-xl"
+      style="background-color: rgba(var(--color-border),0.1); color: rgb(var(--color-muted));">
       Sin imagen disponible
     </div>
     {% endif %}
@@ -25,22 +27,17 @@
 
     <!-- Título y precio -->
     <div>
-      <h1 class="text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-3 tracking-tight">
+      <h1 class="text-3xl font-semibold mb-3 tracking-tight" style="color: rgb(var(--color-text));">
         {{ product.title }}
       </h1>
 
-      <div class="text-3xl font-bold text-yellow-500 dark:text-yellow-400 mb-4">
+      <div class="text-3xl font-bold mb-4" style="color: rgb(var(--color-primary));">
         {{ product.price|price_format }}
       </div>
 
       <!-- Stock -->
-      <p class="text-sm font-medium mb-4
-          {% if product.stock %}
-            text-green-600 dark:text-green-400
-          {% else %}
-            text-red-600 dark:text-red-400
-          {% endif %}
-        ">
+      <p class="text-sm font-medium mb-4"
+        style="{% if product.stock %}color: rgb(var(--color-success));{% else %}color: rgb(var(--color-danger));{% endif %}">
         {% if product.stock %}
         Disponible
         {% else %}
@@ -49,15 +46,15 @@
       </p>
 
       <!-- Descripción -->
-      <div class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-        <h2 class="font-semibold text-gray-800 dark:text-gray-200 mb-2">Descripción del producto:</h2>
+      <div class="leading-relaxed mb-6" style="color: rgb(var(--color-text-muted));">
+        <h2 class="font-semibold mb-2" style="color: rgb(var(--color-text));">Descripción del producto:</h2>
         <p>{{ product.description }}</p>
       </div>
     </div>
 
     {% if product.stock %}
     <!-- Agregar al carrito -->
-    <div class="border-t border-gray-200 dark:border-gray-700 pt-6 mt-4">
+    <div class="pt-6 mt-4" style="border-top: 1px solid rgba(var(--color-border),0.3);">
       {% include 'carts/snippets/add.html' %}
     </div>
     {% endif %}
